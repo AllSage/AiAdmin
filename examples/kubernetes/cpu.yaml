@@ -1,0 +1,42 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: AiAdmin
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: AiAdmin
+  namespace: AiAdmin
+spec:
+  selector:
+    matchLabels:
+      name: AiAdmin
+  template:
+    metadata:
+      labels:
+        name: AiAdmin
+    spec:
+      containers:
+      - name: AiAdmin
+        image: AllSage/AiAdmin:latest
+        ports:
+        - name: http
+          containerPort: 11434
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: AiAdmin
+  namespace: AiAdmin
+spec:
+  type: ClusterIP
+  selector:
+    name: AiAdmin
+  ports:
+  - port: 80
+    name: http
+    targetPort: http
+    protocol: TCP
